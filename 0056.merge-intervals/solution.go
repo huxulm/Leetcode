@@ -9,27 +9,16 @@ func merge(intervals [][]int) [][]int {
 	})
 
 	ans := [][]int{}
-	var left []int
-	left = intervals[0]
+	ans = append(ans, intervals[0])
 	for i := 1; i < len(intervals); i++ {
-		result, ok := mergeTwo(left, intervals[i])
-		if ok {
-			left = result[0]
+		last := ans[len(ans)-1]
+		if last[1] >= intervals[i][0] {
+			last[1] = max(last[1], intervals[i][1])
 		} else {
-			ans = append(ans, left)
-			left = intervals[i]
+			ans = append(ans, intervals[i])
 		}
 	}
-	ans = append(ans, left)
 	return ans
-}
-
-func mergeTwo(a, b []int) ([][]int, bool) {
-	// 需要合并
-	if a[1] >= b[0] {
-		return [][]int{{a[0], max(a[1], b[1])}}, true
-	}
-	return nil, false
 }
 
 func max(a, b int) int {
