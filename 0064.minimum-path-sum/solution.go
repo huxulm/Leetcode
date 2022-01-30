@@ -36,6 +36,7 @@ func min(x, y int) int {
 	return y
 }
 
+// 自顶向下
 func dp(grid [][]int, x, y int, memo map[string]int) (ans int) {
 	key := fmt.Sprintf("%d,%d", x, y)
 
