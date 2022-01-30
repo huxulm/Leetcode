@@ -1,10 +1,10 @@
 package minimumpathsum
 
-func minPathSum(grid [][]int) (ans int) {
-	ans = 1<<31 - 1
+import "fmt"
+
+func minPathSum(grid [][]int) int {
 	m, n := len(grid), len(grid[0])
-	dfs(&ans, grid, m, n, 0, 0, grid[0][0])
-	return
+	return dp(grid, m-1, n-1, make(map[string]int))
 }
 
 // 超时
@@ -34,4 +34,25 @@ func min(x, y int) int {
 		return x
 	}
 	return y
+}
+
+func dp(grid [][]int, x, y int, memo map[string]int) (ans int) {
+	key := fmt.Sprintf("%d,%d", x, y)
+
+	if v, ok := memo[key]; ok {
+		return v
+	}
+
+	// base case
+	if x == 0 && y == 0 {
+		ans = grid[x][y]
+	} else if x == 0 && y > 0 {
+		ans = grid[x][y] + dp(grid, x, y-1, memo)
+	} else if y == 0 && x > 0 {
+		ans = grid[x][y] + dp(grid, x-1, y, memo)
+	} else {
+		ans = grid[x][y] + min(dp(grid, x, y-1, memo), dp(grid, x-1, y, memo))
+	}
+	memo[key] = ans
+	return ans
 }
