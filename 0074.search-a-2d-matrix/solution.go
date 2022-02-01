@@ -1,5 +1,7 @@
 package searcha2dmatrix
 
+import "sort"
+
 func searchMatrix(matrix [][]int, target int) bool {
 	m, n := len(matrix), len(matrix[0])
 	lo, hi := 0, m-1
@@ -32,4 +34,14 @@ func binarySearch(arr []int, target int) bool {
 		}
 	}
 	return false
+}
+
+// LC official
+func searchMatrix1(matrix [][]int, target int) bool {
+	row := sort.Search(len(matrix), func(i int) bool { return matrix[i][0] > target }) - 1
+	if row < 0 {
+		return false
+	}
+	col := sort.SearchInts(matrix[row], target)
+	return col < len(matrix[row]) && matrix[row][col] == target
 }
