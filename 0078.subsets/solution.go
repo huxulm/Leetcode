@@ -38,12 +38,12 @@ func subsets1(nums []int) (ans [][]int) {
 	n := len(nums)
 	for mask := 0; mask < 1<<n; mask++ {
 		set := []int{}
-		for i, v := range nums {
+		for i := 0; i < n; i++ {
 			if mask>>i&1 > 0 {
-				set = append(set, v)
+				set = append(set, nums[i])
 			}
 		}
-		ans = append(ans, append([]int(nil), set...))
+		ans = append(ans, set)
 	}
 	return
 }
