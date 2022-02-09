@@ -26,3 +26,21 @@ func abs(x int) int {
 	}
 	return x
 }
+
+// 使用哈希
+// 时间O(n)
+// 空间间O(n)
+func countKDifference1(nums []int, k int) int {
+	// |nums[i]-nums[j]| = k
+	// nums[i] = nums[j] + k 或 nums[i] = nums[j] - k
+	cnt := map[int]int{}
+
+	ans := 0
+
+	for _, x := range nums {
+		ans += cnt[x-k] + cnt[x+k]
+		cnt[x]++
+	}
+
+	return ans
+}
