@@ -15,29 +15,20 @@ func pathSum(root *TreeNode, targetSum int) (ans [][]int) {
 			return
 		}
 
-		if root.Left == nil && root.Right == nil {
-			if targetSum == root.Val {
-				*track = append(*track, root.Val)
-				ans = append(ans, append([]int(nil), *track...))
-				*track = (*track)[:len(*track)-1]
-			}
+		*track = append(*track, root.Val)
+		targetSum -= root.Val
+
+		defer func() {
+			*track = (*track)[:len(*track)-1]
+		}()
+
+		if root.Left == nil && root.Right == nil && targetSum == 0 {
+			ans = append(ans, append([]int(nil), *track...))
 			return
 		}
 
-		// left
-		if root.Left != nil {
-			*track = append(*track, root.Val)
-			dfs(root.Left, targetSum-root.Val, track)
-			*track = (*track)[:len(*track)-1]
-		}
-
-		if root.Right != nil {
-			// right
-			*track = append(*track, root.Val)
-			dfs(root.Right, targetSum-root.Val, track)
-			*track = (*track)[:len(*track)-1]
-		}
-
+		dfs(root.Left, targetSum-root.Val, track)
+		dfs(root.Right, targetSum-root.Val, track)
 	}
 
 	dfs(root, targetSum, &track)
