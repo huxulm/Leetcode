@@ -17,15 +17,10 @@ func intersect(nums1 []int, nums2 []int) []int {
 			ans = append(ans, nums1[p1])
 			p1++
 			p2++
-			continue
 		} else if nums1[p1] < nums2[p2] {
-			for p1 < n1 && nums1[p1] < nums2[p2] {
-				p1++
-			}
+			p1++
 		} else if nums1[p1] > nums2[p2] {
-			for p2 < n2 && nums1[p1] > nums2[p2] {
-				p2++
-			}
+			p2++
 		}
 
 	}
