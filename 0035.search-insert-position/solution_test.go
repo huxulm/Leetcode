@@ -31,7 +31,7 @@ func TestSearchInsert(t *testing.T) {
 	}
 
 	for _, c := range cases {
-		result := searchInsert(c.nums, c.target)
+		result := searchInsert1(c.nums, c.target)
 		if result != c.expect {
 			t.Errorf("Input: %v, target: %d expect %d but got: %d", c.nums, c.target, c.expect, result)
 		}

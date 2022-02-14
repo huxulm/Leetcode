@@ -23,3 +23,19 @@ func left_bound(nums []int, target int) int {
 	}
 	return l
 }
+
+//「在一个有序数组中找第一个大于等于 \textit{target}target 的下标」。
+func searchInsert1(nums []int, target int) int {
+	l, r := 0, len(nums)-1
+
+	for l <= r {
+		mid := (r + l) >> 1
+		if nums[mid] < target {
+			l = mid + 1
+		} else {
+			r = mid - 1
+		}
+	}
+
+	return l
+}
