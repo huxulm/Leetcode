@@ -9,11 +9,10 @@ import (
 // 然后求两数之和。要求不重复的三元组，需要考虑重复问题。
 //
 func threeSum(nums []int) [][]int {
-	n := len(nums)
 	ans := [][]int{}
-
 	// 升序
 	sort.Ints(nums)
+	n := len(nums)
 
 	for first := 0; first < n; first++ {
 		// 需要和上次枚举的不同
@@ -46,6 +45,61 @@ func threeSum(nums []int) [][]int {
 
 			if nums[second]+nums[third] == target {
 				ans = append(ans, []int{nums[first], nums[second], nums[third]})
+			}
+		}
+	}
+
+	return ans
+}
+
+func threeSum1(nums []int) [][]int {
+
+	ans := [][]int{}
+	n := len(nums)
+
+	// 升序
+	sort.Ints(nums)
+
+	// 枚举第一个数
+	for i := 0; i < n; i++ {
+
+		if nums[i] > 0 {
+			break
+		}
+
+		// 枚举过的，跳过
+		if i > 0 && nums[i] == nums[i-1] {
+			continue
+		}
+		// [i+1, n-1]
+		// 枚举第二个数
+		for j := i + 1; j < n; j++ {
+			// 枚举过的，跳过
+			if j > 0 && nums[j] == nums[j-1] {
+				continue
+			}
+			l, r := j, n-1
+			for l < r {
+				sum := nums[i] + nums[l] + nums[r]
+				if sum == 0 {
+					ans = append(ans, []int{nums[i], nums[l], nums[r]})
+					// 跳过枚举过的
+					if l < r && nums[l] == nums[l+1] {
+						l++
+					}
+					l++
+					// 跳过枚举过的
+					for l < r && nums[r] == nums[r-1] {
+						r--
+					}
+					r--
+				} else if sum < 0 {
+					// l右移动
+					l++
+				} else {
+					// r左移
+					r--
+				}
 			}
 		}
 	}
