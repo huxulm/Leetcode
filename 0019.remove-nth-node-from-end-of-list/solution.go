@@ -29,3 +29,26 @@ func removeNthFromEnd(head *ListNode, n int) *ListNode {
 	head.Next = removed.Next
 	return head
 }
+
+func removeNthFromEnd1(head *ListNode, n int) *ListNode {
+	dummy := &ListNode{Next: head}
+	// 找到倒数第n+1个节点
+	x := findNthFromEnd(dummy, n+1)
+	x.Next = x.Next.Next
+	return dummy.Next
+}
+
+func findNthFromEnd(head *ListNode, n int) *ListNode {
+	p1, p2 := head, head
+	// p1先走n步
+	for i := 0; i < n; i++ {
+		p1 = p1.Next
+	}
+
+	for p1 != nil {
+		p1 = p1.Next
+		p2 = p2.Next
+	}
+
+	return p2
+}
