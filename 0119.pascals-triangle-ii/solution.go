@@ -20,3 +20,24 @@ func getRow(rowIndex int) []int {
 	row[rowIndex] = 1
 	return row
 }
+
+// 迭代
+func getRow1(rowIndex int) []int {
+	if rowIndex == 0 {
+		return []int{1}
+	}
+	var prev, cur []int = []int{1}, nil
+	for i := 1; i <= rowIndex; i++ {
+		n := i + 1
+		cur = make([]int, n)
+		for j := 0; j < n; j++ {
+			if j == 0 || j == n-1 {
+				cur[j] = 1
+				continue
+			}
+			cur[j] = prev[j-1] + prev[j]
+		}
+		prev, cur = cur, nil
+	}
+	return prev
+}
