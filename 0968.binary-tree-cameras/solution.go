@@ -97,46 +97,43 @@ func minCameraCover1(root *TreeNode) (ans int) {
 	return
 }
 
-// 0: no cover
-// 1: cover
-// 2: camera
+// 后序遍历
 var (
 	camera int
 )
 
-func postorder(cur *TreeNode) int {
-	if cur == nil {
-		return 1
-	}
-
-	left := postorder(cur.Left)
-	right := postorder(cur.Right)
-
-	if left == 0 || right == 0 {
-		camera++
-		return 2
-	}
-
-	if left == 2 || right == 2 {
-		return 1
-	}
-
-	return 0
-}
-
 func minCameraCover2(root *TreeNode) int {
-	camera = 0
-	if root == nil {
-		return 0
-	}
+	left, right := traversal(root.Left), traversal(root.Right)
 
-	left := postorder(root.Left)
-	right := postorder(root.Right)
 	if left == 0 || right == 0 {
 		camera++
 	} else if left == 1 && right == 1 {
 		camera++
 	}
-
 	return camera
+}
+
+// 0 uncover
+// 1 cover
+// 2 camera
+func traversal(root *TreeNode) int {
+	if root == nil {
+		return 1
+	}
+
+	left := traversal(root.Left)
+	right := traversal(root.Right)
+
+	// 自己装摄像头
+	if left == 0 || right == 0 {
+		camera++
+		return 2
+	}
+
+	// 被照亮
+	if left == 2 || right == 2 {
+		return 1
+	}
+
+	return 0
 }
