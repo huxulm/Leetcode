@@ -74,3 +74,25 @@ func lengthOfLongestSubstring2(s string) int {
 	}
 	return ans
 }
+
+// 滑动窗口
+func lengthOfLongestSubstring3(s string) (ans int) {
+	m := map[byte]int{}
+	n := len(s)
+
+	l, r := 0, 0
+	for r < n {
+		m[s[r]]++
+
+		for l < r && m[s[r]] > 1 {
+			m[s[l]]--
+			l++
+		}
+
+		if r-l+1 > ans {
+			ans = r - l + 1
+		}
+		r++
+	}
+	return
+}
