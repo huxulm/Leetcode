@@ -96,3 +96,48 @@ func exist1(board [][]byte, word string) bool {
 	}
 	return false
 }
+
+func exist2(board [][]byte, word string) bool {
+	cnts := [58]int{}
+	for _, ch := range word {
+		cnts[ch]++
+	}
+
+	for _, ch := range word {
+		cnts[ch]--
+		if cnts[ch] < 0 {
+			return false
+		}
+	}
+
+	var m, n = len(board), len(board[0])
+
+	var dfs func(row, col, idx int) bool
+	dfs = func(row, col, idx int) bool {
+		if idx == len(word) {
+			return true
+		}
+		if row < 0 || row >= m || col < 0 || col >= n {
+			return false
+		}
+		if board[row][col] == word[idx] {
+			board[row][col] = '#'
+			if dfs(row-1, col, idx+1) || dfs(row+1, col, idx+1) ||
+				dfs(row, col-1, idx+1) || dfs(row, col+1, idx+1) {
+				return true
+			}
+			board[row][col] = word[idx]
+		}
+		return false
+	}
+
+	for i := range board {
+		for j := range board[i] {
+			if dfs(i, j, 0) {
+				return true
+			}
+		}
+	}
+
+	return false
+}
