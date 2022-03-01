@@ -25,3 +25,24 @@ func convert(s string, numRows int) string {
 	}
 	return string(res)
 }
+
+func convert1(s string, r int) string {
+	n := len(s)
+	if r == 1 {
+		return s
+	}
+
+	ans := make([]byte, 0, n)
+
+	t := 2*r - 2
+	for i := 0; i < r; i++ {
+		for j := 0; i+j < n; j = j + t {
+			ans = append(ans, s[i+j])          // 当前周期的第一个字符
+			if i > 0 && i < r-1 && j+t-i < n { // (i+j+t)-2*i
+				ans = append(ans, s[j+t-i])
+			}
+		}
+	}
+
+	return string(ans)
+}
