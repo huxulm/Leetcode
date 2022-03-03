@@ -38,7 +38,9 @@ func binarySearch(arr []int, target int) bool {
 
 // LC official
 func searchMatrix1(matrix [][]int, target int) bool {
-	row := sort.Search(len(matrix), func(i int) bool { return matrix[i][0] > target }) - 1
+	row := sort.Search(len(matrix), func(i int) bool {
+		return matrix[i][0] > target
+	}) - 1
 	if row < 0 {
 		return false
 	}
