@@ -19,7 +19,7 @@ func TestSearch(t *testing.T) {
 	}
 
 	for _, test := range tests {
-		if result := search(test.nums, test.target); result != test.expect {
+		if result := search1(test.nums, test.target); result != test.expect {
 			t.Errorf("Input %v target %d expect %v got %v", test.nums, test.target, test.expect, result)
 		}
 	}
