@@ -1,6 +1,9 @@
 package minimumtimetocompletetrips
 
-import "sort"
+import (
+	"math"
+	"sort"
+)
 
 // 方法一: 库函数二分判定
 func minimumTime(time []int, totalTrips int) int64 {
@@ -39,4 +42,31 @@ func minimumTime1(time []int, totalTrips int) int64 {
 		}
 	}
 	return int64(l)
+}
+
+func minimumTime2(time []int, totalTrips int) int64 {
+	return lowerSearch(1, math.MaxInt64, func(i int64) bool {
+		r := int64(0)
+		for j := range time {
+			if i >= int64(time[j]) {
+				r += i / int64(time[j])
+			}
+			if r >= int64(totalTrips) {
+				return true
+			}
+		}
+		return r >= int64(totalTrips)
+	})
+}
+
+func lowerSearch(l, r int64, f func(int64) bool) int64 {
+	for l < r {
+		h := int64(uint(r+l) >> 1)
+		if !f(h) {
+			l = h + 1 // 保留 f(l-1) = false
+		} else {
+			r = h // 保留 f(r) = true
+		}
+	}
+	return l
 }
