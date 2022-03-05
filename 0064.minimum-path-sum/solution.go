@@ -57,3 +57,35 @@ func dp(grid [][]int, x, y int, memo map[string]int) (ans int) {
 	memo[key] = ans
 	return ans
 }
+
+func minPathSum1(grid [][]int) int {
+	m, n := len(grid), len(grid[0])
+	dp := make([][]int, m)
+	for i := range dp {
+		dp[i] = make([]int, n)
+	}
+
+	for i := 0; i < m; i++ {
+		if i == 0 {
+			dp[i][0] = grid[i][0]
+		} else {
+			dp[i][0] = dp[i-1][0] + grid[i][0]
+		}
+	}
+
+	for j := 0; j < n; j++ {
+		if j == 0 {
+			dp[0][j] = grid[0][j]
+		} else {
+			dp[0][j] = grid[0][j] + dp[0][j-1]
+		}
+	}
+
+	for i := 1; i < m; i++ {
+		for j := 1; j < n; j++ {
+			dp[i][j] = min(dp[i-1][j], dp[i][j-1]) + grid[i][j]
+		}
+	}
+
+	return dp[n-1][m-1]
+}
