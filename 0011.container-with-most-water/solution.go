@@ -1,20 +1,17 @@
 package containerwithmostwater
 
 func maxArea(height []int) (area int) {
-	left, right := 0, len(height)-1
+	lo, hi := 0, len(height)-1
 
-	area = 0
-
-	for left < right {
-		if height[left] < height[right] {
-			area = max(area, (right-left)*height[left])
-			left++
+	for lo < hi {
+		if height[lo] < height[hi] {
+			area = max(area, height[lo]*(hi-lo))
+			lo++
 		} else {
-			area = max(area, (right-left)*height[right])
-			right--
+			area = max(area, height[hi]*(hi-lo))
+			hi--
 		}
 	}
-
 	return
 }
 
