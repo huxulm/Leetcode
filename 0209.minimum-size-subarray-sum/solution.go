@@ -61,3 +61,29 @@ func lowerBound(nums []int, target int) int {
 	}
 	return l
 }
+
+// 方法三: 滑动窗口
+func minSubArrayLen2(target int, nums []int) (ans int) {
+
+	n, l, r, sum := len(nums), 0, 0, 0
+	ans = 1<<31 - 1
+	for r < n {
+		sum += nums[r]
+		if sum < target {
+			r++
+			continue
+		}
+		for sum >= target && l <= r {
+			if r-l+1 < ans {
+				ans = r - l + 1
+			}
+			sum -= nums[l]
+			l++
+		}
+		r++
+	}
+	if ans == 1<<31-1 {
+		ans = 0
+	}
+	return
+}
