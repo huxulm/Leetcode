@@ -57,8 +57,10 @@ func subsets2(nums []int) (ans [][]int) {
 			ans = append(ans, append([]int(nil), set...))
 			return
 		}
+		// 选择 cur
 		set = append(set, nums[cur])
 		dfs(cur + 1)
+		// 不选 cur
 		set = set[:len(set)-1]
 		dfs(cur + 1)
 	}
