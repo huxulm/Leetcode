@@ -1,5 +1,6 @@
 package subsets
 
+// 方法一: 回溯
 func subsets(nums []int) (ans [][]int) {
 	n := len(nums)
 	// nums 的 0~n个元素的组合
@@ -65,5 +66,20 @@ func subsets2(nums []int) (ans [][]int) {
 		dfs(cur + 1)
 	}
 	dfs(0)
+	return
+}
+
+// 方法三: 二进制枚举
+func subsets3(nums []int) (ans [][]int) {
+	n := len(nums)
+	for mask := 0; mask < 1<<n; mask++ {
+		t := []int{}
+		for i := 0; i < n; i++ {
+			if mask&(1<<i) > 0 {
+				t = append(t, nums[i])
+			}
+		}
+		ans = append(ans, t)
+	}
 	return
 }
