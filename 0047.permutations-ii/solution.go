@@ -34,3 +34,36 @@ func permuteUnique(nums []int) [][]int {
 
 	return res
 }
+
+func permuteUnique1(nums []int) (ans [][]int) {
+	sort.Ints(nums)
+
+	n := len(nums)
+	track := make([]int, n)
+	used := make([]bool, n)
+
+	var backtrack func(idx int)
+	backtrack = func(idx int) {
+		if idx == n {
+			ans = append(ans, append([]int(nil), track...))
+			return
+		}
+
+		for i, x := range nums {
+			if used[i] || (i > 0 && x == nums[i-1] && !used[i-1]) {
+				continue
+			}
+			// 选择 idx
+			track[idx] = x
+			// 标记 idx
+			used[i] = true
+			// 选择 idx+1
+			backtrack(idx + 1)
+			// 撤销 idx 标记
+			used[i] = false
+		}
+	}
+
+	backtrack(0)
+	return
+}
