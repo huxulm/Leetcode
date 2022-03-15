@@ -56,3 +56,37 @@ func backtrack1(res *[][]int, canditates []int, target int, track *[]int, idx in
 		}
 	}
 }
+
+func combinationSum1(candidates []int, target int) (ans [][]int) {
+	sort.Ints(candidates)
+	n := len(candidates)
+
+	if candidates[0] > target {
+		return
+	}
+
+	track := []int(nil)
+	var backtrack func(t, idx int)
+	backtrack = func(t, idx int) {
+
+		if t <= 0 || idx == n {
+			if t == 0 {
+				ans = append(ans, append([]int(nil), track...))
+			}
+			return
+		}
+
+		// 选择当前
+		if t >= candidates[idx] {
+			track = append(track, candidates[idx])
+			backtrack(t-candidates[idx], idx)
+			track = track[:len(track)-1]
+		}
+
+		// 不选当前
+		backtrack(t, idx+1)
+	}
+
+	backtrack(target, 0)
+	return
+}
