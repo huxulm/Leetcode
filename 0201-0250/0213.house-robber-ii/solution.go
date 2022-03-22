@@ -39,3 +39,7 @@ func max(x, y int) int {
 	}
 	return y
 }
+
+func rob1(nums []int) int {
+	return 0
+}
