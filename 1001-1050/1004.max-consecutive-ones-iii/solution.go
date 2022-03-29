@@ -9,14 +9,14 @@ func longestOnes(nums []int, k int) (ans int) {
 			zeros++
 		}
 
-		for l < r && zeros > k {
+		for zeros > k {
 			if nums[l] == 0 {
 				zeros--
 			}
 			l++
 		}
 
-		if zeros <= k && r-l+1 > ans {
+		if r-l+1 > ans {
 			ans = r - l + 1
 		}
 
