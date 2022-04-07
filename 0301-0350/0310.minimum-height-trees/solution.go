@@ -45,3 +45,40 @@ func findMinHeightTrees(n int, edges [][]int) []int {
 	}
 	return []int{path[m/2]}
 }
+
+func findMinHeightTrees1(n int, edges [][]int) []int {
+	if n == 1 {
+		return []int{0}
+	}
+	graph := make([][]int, n)
+	degrees := make([]int, n)
+	for _, edge := range edges {
+		u, v := edge[0], edge[1]
+		graph[u] = append(graph[u], v)
+		graph[v] = append(graph[v], u)
+		degrees[u]++
+		degrees[v]++
+	}
+	var q []int
+	for i := 0; i < n; i++ {
+		if degrees[i] == 1 {
+			q = append(q, i)
+		}
+	}
+	var ans []int
+	for len(q) > 0 {
+		ans = q
+		size := len(q)
+		for i := 0; i < size; i++ {
+			node := q[i]
+			for _, neighbor := range graph[node] {
+				degrees[neighbor]--
+				if degrees[neighbor] == 1 {
+					q = append(q, neighbor)
+				}
+			}
+		}
+		q = q[size:]
+	}
+	return ans
+}
