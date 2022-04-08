@@ -21,12 +21,11 @@ func levelOrder(root *Node) (ans [][]int) {
 		ans = append(ans, []int{})
 
 		for _, n := range tmp {
-			if n == nil {
-				continue
-			}
 			ans[idx] = append(ans[idx], n.Val)
 			for _, c := range n.Children {
-				q = append(q, c)
+				if c != nil {
+					q = append(q, c)
+				}
 			}
 		}
 		idx++
