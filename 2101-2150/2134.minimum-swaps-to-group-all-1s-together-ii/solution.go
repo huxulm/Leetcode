@@ -1,5 +1,6 @@
 package minimumswapstogroupall1stogetherii
 
+// 方法一: 前缀和
 func minSwaps(nums []int) (ans int) {
 	n := len(nums)
 	// 1的个数
@@ -38,4 +39,44 @@ func min(x, y int) int {
 		return x
 	}
 	return y
+}
+
+// 方法二: 滑动窗口
+func minSwaps1(nums []int) (ans int) {
+	n := len(nums)
+	cntOne := 0
+
+	for i := range nums {
+		if nums[i] == 1 {
+			cntOne++
+		}
+	}
+
+	if cntOne <= 1 || cntOne == n {
+		return
+	}
+
+	ans = 1<<31 - 1
+	cntZero := 0
+
+	for i := 0; i < cntOne-1; i++ {
+		if nums[i] == 0 {
+			cntZero++
+		}
+	}
+
+	for i := 0; i < n; i++ {
+		end := (i + cntOne - 1) % n
+		if nums[end] == 0 {
+			cntZero++
+		}
+
+		ans = min(ans, cntZero)
+
+		if nums[i] == 0 {
+			cntZero--
+		}
+	}
+
+	return
 }
