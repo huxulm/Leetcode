@@ -5,12 +5,10 @@ func binaryGap(n int) (ans int) {
 
 	for i := 0; n > 0; i, n = i+1, n>>1 {
 		if n&1 == 1 {
-			if last == -1 {
-				last = i
-			} else {
+			if last != -1 {
 				ans = max(i-last, ans)
-				last = i
 			}
+			last = i
 		}
 	}
 	return
