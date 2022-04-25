@@ -2,34 +2,39 @@ package medianoftwosortedarrays
 
 // https://leetcode-cn.com/problems/median-of-two-sorted-arrays/comments/36497
 func findMedianSortedArrays(nums1 []int, nums2 []int) float64 {
-	m, n := len(nums1), len(nums2)
-	left, right := (m+n+1)/2, (m+n+2)/2
-	return float64(findKth(nums1, 0, nums2, 0, left)+findKth(nums1, 0, nums2, 0, right)) / 2.0
+	totalLength := len(nums1) + len(nums2)
+	if totalLength%2 == 1 {
+		midIndex := totalLength / 2
+		return float64(getKthElement(nums1, nums2, midIndex+1))
+	} else {
+		midIndex1, midIndex2 := totalLength/2-1, totalLength/2
+		return float64(getKthElement(nums1, nums2, midIndex1+1)+getKthElement(nums1, nums2, midIndex2+1)) / 2.0
+	}
 }
 
-func findKth(nums1 []int, i int, nums2 []int, j int, k int) int {
-	if i >= len(nums1) {
-		return nums2[j+k-1] //nums1为空数组
-	}
-	if j >= len(nums2) {
-		return nums1[i+k-1] //nums2为空数组
-	}
-	if k == 1 {
-		return min(nums1[i], nums2[j])
-	}
-	var midVal1, midVal2 int
-	if i+k/2-1 < len(nums1) {
-		midVal1 = nums1[i+k/2-1]
-	} else {
-		midVal1 = 1<<31 - 1
-	}
-	if j+k/2-1 < len(nums2) {
-		midVal2 = nums2[j+k/2-1]
-	}
-	if midVal1 < midVal2 {
-		return findKth(nums1, i+k/2, nums2, j, k-k/2)
-	} else {
-		return findKth(nums1, i, nums2, j+k/2, k-k/2)
+func getKthElement(nums1, nums2 []int, k int) int {
+	index1, index2 := 0, 0
+	for {
+		if index1 == len(nums1) {
+			return nums2[index2+k-1]
+		}
+		if index2 == len(nums2) {
+			return nums1[index1+k-1]
+		}
+		if k == 1 {
+			return min(nums1[index1], nums2[index2])
+		}
+		half := k / 2
+		newIndex1 := min(index1+half, len(nums1)) - 1
+		newIndex2 := min(index2+half, len(nums2)) - 1
+		pivot1, pivot2 := nums1[newIndex1], nums2[newIndex2]
+		if pivot1 <= pivot2 {
+			k -= (newIndex1 - index1 + 1)
+			index1 = newIndex1 + 1
+		} else {
+			k -= (newIndex2 - index2 + 1)
+			index2 = newIndex2 + 1
+		}
 	}
 }
 
