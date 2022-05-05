@@ -35,13 +35,28 @@ func numSubarrayProductLessThanK(nums []int, k int) (ans int) {
 }
 
 // 方法二: 双指针/滑动窗口
+// func numSubarrayProductLessThanK1(nums []int, k int) (ans int) {
+// 	n := len(nums)
+// 	l, r := 0, 0
+// 	mul := 1
+// 	for r < n {
+// 		mul *= nums[r]
+// 		for mul >= k && l <= r {
+// 			mul /= nums[l]
+// 			l++
+// 		}
+// 		ans += r - l + 1
+// 		r++
+// 	}
+// 	return ans
+// }
+
 func numSubarrayProductLessThanK1(nums []int, k int) (ans int) {
 	n := len(nums)
-	l, r := 0, 0
-	mul := 1
+	l, r, mul := 0, 0, 1
 	for r < n {
 		mul *= nums[r]
-		for mul >= k && l <= r {
+		for l <= r && mul >= k {
 			mul /= nums[l]
 			l++
 		}
