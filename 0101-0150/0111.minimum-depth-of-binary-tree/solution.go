@@ -1,7 +1,5 @@
 package minimumdepthofbinarytree
 
-import "container/list"
-
 // Definition for a binary tree node.
 type TreeNode struct {
 	Val   int
@@ -14,29 +12,23 @@ func minDepth(root *TreeNode) int {
 	if root == nil {
 		return 0
 	}
-	q := list.New()
-	q.PushBack(root)
-
-	minDepth := 1
-
-	for q.Len() > 0 {
-		sz := q.Len()
-		minDepth++
-		for i := 0; i < sz; i++ {
-			root = q.Remove(q.Front()).(*TreeNode)
+	q := []*TreeNode{root}
+	minDepth := 0
+	for ; q != nil; minDepth++ {
+		tmp := q
+		q = nil
+		for _, root := range tmp {
 			if root.Left == nil && root.Right == nil {
-				goto min
+				return minDepth + 1
 			}
 			if root.Left != nil {
-				q.PushBack(root.Left)
+				q = append(q, root.Left)
 			}
 			if root.Right != nil {
-				q.PushBack(root.Right)
+				q = append(q, root.Right)
 			}
 		}
 	}
-
-min:
 	return minDepth
 }
 
