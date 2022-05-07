@@ -11,4 +11,7 @@ func TestXxx(t *testing.T) {
 	if err := testutil.RunLeetCodeFuncWithFile(t, openLock, "./in.txt", targetCaseNum); err != nil {
 		t.Fatal(err)
 	}
+	if err := testutil.RunLeetCodeFuncWithFile(t, openLock1, "./in.txt", targetCaseNum); err != nil {
+		t.Fatal(err)
+	}
 }
