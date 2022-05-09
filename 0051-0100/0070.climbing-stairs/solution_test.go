@@ -1,6 +1,10 @@
 package climbingstairs
 
-import "testing"
+import (
+	"testing"
+
+	"github.com/EndlessCheng/codeforces-go/leetcode/testutil"
+)
 
 func TestClimbStairs(t *testing.T) {
 	tests := []struct {
@@ -16,5 +20,11 @@ func TestClimbStairs(t *testing.T) {
 		if r := climbStairs1(c.input); r != c.expect {
 			t.Errorf("Input: %d, expect: %d but got: %d", c.input, c.expect, r)
 		}
+	}
+}
+
+func TestXxx(t *testing.T) {
+	if err := testutil.RunLeetCodeFuncWithFile(t, climbStairs3, "./in.txt", -1); err != nil {
+		t.Fatal(err)
 	}
 }
