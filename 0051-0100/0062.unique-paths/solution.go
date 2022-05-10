@@ -40,3 +40,17 @@ func dp(x, y int) int {
 	// 到达 (x, y) 的路径数等于到达 (x - 1, y) 和 (x, y - 1) 路径数之和
 	return dp(x-1, y) + dp(x, y-1)
 }
+
+// 动态规划
+func uniquePaths2(m int, n int) int {
+	dp := make([]int, m)
+	for i := range dp {
+		dp[i] = 1
+	}
+	for i := 1; i < n; i++ {
+		for j := 1; j < m; j++ {
+			dp[j] += dp[j-1]
+		}
+	}
+	return dp[m-1]
+}
