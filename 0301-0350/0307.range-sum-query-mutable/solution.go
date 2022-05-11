@@ -1,45 +1,51 @@
 package rangesumquerymutable
 
-import "math"
+import (
+	"sort"
+)
 
-// 方法一: 分块处理
+// 分块
 type NumArray struct {
-	nums, sums []int // sums[i] 表示第 i 个块的元素和
-	size       int   // 块的大小
+	nums, sum []int
+	size      int
 }
 
 func Constructor(nums []int) NumArray {
 	n := len(nums)
-	size := int(math.Sqrt(float64(n)))
-	sums := make([]int, (n+size-1)/size) // n/size 向上取整
-	for i, num := range nums {
-		sums[i/size] += num
+	size := sort.Search(n, func(i int) bool { return (i+1)*(i+1) > n })
+	// 向上取整
+	size = (n-1)/size + 1
+	sum := make([]int, size)
+	for i := range nums {
+		sum[i/size] += nums[i]
 	}
-	return NumArray{nums, sums, size}
+	return NumArray{nums: nums, size: size, sum: sum}
 }
 
-func (na *NumArray) Update(index, val int) {
-	na.sums[index/na.size] += val - na.nums[index]
+func (na *NumArray) Update(index int, val int) {
+	na.sum[index/na.size] += (val - na.nums[index])
 	na.nums[index] = val
 }
 
-func (na *NumArray) SumRange(left, right int) (ans int) {
-	size := na.size
-	b1, b2 := left/size, right/size
-	if b1 == b2 { // 区间 [left, right] 在同一块中
-		for i := left; i <= right; i++ {
+func (na *NumArray) SumRange(l int, r int) (ans int) {
+	p, q := l/na.size, r/na.size
+	// 同一分段
+	if p == q {
+		for i := l; i <= r; i++ {
+			ans += na.nums[i]
+		}
+		return
+	} else {
+		for i := l; i < (p+1)*na.size; i++ {
+			ans += na.nums[i]
+		}
+		// [p+1, q-1] 段
+		for i := p + 1; i <= q-1; i++ {
+			ans += na.sum[i]
+		}
+		for i := r; i >= q*na.size; i-- {
 			ans += na.nums[i]
 		}
 		return
 	}
-	for i := left; i < (b1+1)*size; i++ {
-		ans += na.nums[i]
-	}
-	for i := b1 + 1; i < b2; i++ {
-		ans += na.sums[i]
-	}
-	for i := b2 * size; i <= right; i++ {
-		ans += na.nums[i]
-	}
-	return
 }
