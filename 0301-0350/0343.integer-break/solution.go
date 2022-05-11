@@ -32,3 +32,15 @@ func integerBreak1(n int) (ans int) {
 
 	return
 }
+
+// dp[i] 拆分数字i的最大乘积
+func integerBreak2(n int) int {
+	dp := make([]int, n+1)
+	dp[2] = 1
+	for i := 3; i <= n; i++ {
+		for j := 1; j < i; j++ {
+			dp[i] = max(dp[i], max(dp[i-j]*j, (i-j)*j))
+		}
+	}
+	return dp[n]
+}
