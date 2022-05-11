@@ -37,11 +37,23 @@ func climbStairs1(n int) int {
 	return dp2
 }
 
+// func climbStairs(n int) int {
+// 	p, q, r := 0, 0, 1
+// 	for i := 1; i <= n; i++ {
+// 		p = q
+// 		q = r
+// 		r = p + q
+// 	}
+// 	return r
+// }
+
 func climbStairs3(n int) int {
-	f := make([]int, n+1)
-	f[0], f[1], f[2] = 1, 1, 2
-	for i := 3; i <= n; i++ {
-		f[i] = f[i-1] + f[i-2]
+	if n < 2 {
+		return n
 	}
-	return f[n]
+	f1, f2 := 1, 2
+	for i := 3; i <= n; i++ {
+		f1, f2 = f2, f1+f2
+	}
+	return f2
 }
