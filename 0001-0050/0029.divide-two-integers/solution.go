@@ -81,6 +81,7 @@ func quickAdd(y, z, x int) bool {
 	return true
 }
 
+// https://leetcode.cn/problems/divide-two-integers/solution/by-huxulm-f6zn/
 func divide1(dividend int, divisor int) int {
 	x, y := dividend, divisor
 	isNeg := (x > 0 && y < 0) || (x < 0 && y > 0)
@@ -108,6 +109,8 @@ func divide1(dividend int, divisor int) int {
 	ans = l - 1
 
 	// STL 一行流
+	// f(x)=true r = h
+	// f(x)=false l = h+1
 	// ans = sort.Search(x+1, func(i int) bool { return mul(y, i) > x }) - 1
 
 	if ans == -1 {
