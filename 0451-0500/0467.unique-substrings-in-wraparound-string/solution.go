@@ -29,16 +29,19 @@ func findSubstringInWraproundString(p string) (ans int) {
 
 // 动态规划
 func findSubstringInWraproundString1(p string) (ans int) {
-	dp := [26]int{}
+	dp := [26]int{} // 记录以 ch 结尾的最长连续子串的长度（也等于ch结尾子串数）
 	k := 0
 	for i := range p {
-		if i > 0 && p[i]-'a' == (p[i-1]-'a'+1)%26 {
+		if i > 0 && p[i]-'a' == (p[i-1]-'a'+1)%26 { // 连续，长度+1
 			k++
 		} else {
-			k = 1
+			k = 1 // 不连续，长度记为 1
 		}
+		// 更新最长长度
 		dp[p[i]-'a'] = max(dp[p[i]-'a'], k)
 	}
+
+	// 统计 26 个字母结尾的连续子串的子串总数
 	for _, v := range dp {
 		ans += v
 	}
