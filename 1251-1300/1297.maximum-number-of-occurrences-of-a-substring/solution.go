@@ -42,7 +42,11 @@ func maxFreq1(s string, maxLetters int, minSize int, maxSize int) (ans int) {
 	n := len(s)
 	m := map[string]int{}
 
+	// 在长度 [minSize, maxSize] 中所有满足条件的子串次数最多的一定不会超过
+	// 长度 = minSize的子串个数
 	for i := 0; i < n-minSize+1; i++ {
+
+		// 枚举每个 左端点为 i 长度为 minSize 的子串
 		cur := s[i : i+minSize]
 		cnt := [26]bool{}
 		tot := 0
@@ -52,6 +56,8 @@ func maxFreq1(s string, maxLetters int, minSize int, maxSize int) (ans int) {
 				cnt[ch-'a'] = true
 			}
 		}
+
+		// 子串不同字符数判断
 		if tot <= maxLetters {
 			m[cur]++
 			if m[cur] > ans {
