@@ -20,3 +20,19 @@ func sumRootToLeaf(root *TreeNode) (ans int) {
 	dfs(root, 0)
 	return
 }
+
+// LC 1022
+func sumRootToLeaf1(root *TreeNode) (ans int) {
+	var dfs func(root *TreeNode, val int) int
+	dfs = func(root *TreeNode, val int) int {
+		if root == nil {
+			return 0
+		}
+		val = val<<1 | root.Val
+		if root.Left == root.Right {
+			return val
+		}
+		return dfs(root.Left, val) + dfs(root.Right, val)
+	}
+	return dfs(root, 0)
+}
