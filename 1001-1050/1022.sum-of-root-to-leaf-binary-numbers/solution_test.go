@@ -7,7 +7,7 @@ import (
 )
 
 func TestXxx(t *testing.T) {
-	if err := testutil.RunLeetCodeFuncWithFile(t, sumRootToLeaf1, "./in.txt", 0); err != nil {
+	if err := testutil.RunLeetCodeFuncWithFile(t, sumRootToLeaf3, "./in.txt", 0); err != nil {
 		t.Fatal(err)
 	}
 }
