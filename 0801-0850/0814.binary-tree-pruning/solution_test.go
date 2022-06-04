@@ -7,7 +7,12 @@ import (
 )
 
 func TestXxx(t *testing.T) {
-	if err := testutil.RunLeetCodeFuncWithFile(t, nil, "./in.txt", 0); err != nil {
+	if err := testutil.RunLeetCodeFuncWithFile(t, pruneTree, "./in.txt", 0); err != nil {
+		t.Fatal(err)
+	}
+}
+func TestXxx1(t *testing.T) {
+	if err := testutil.RunLeetCodeFuncWithFile(t, pruneTree1, "./in.txt", 0); err != nil {
 		t.Fatal(err)
 	}
 }

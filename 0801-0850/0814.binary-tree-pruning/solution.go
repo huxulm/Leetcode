@@ -18,3 +18,26 @@ func pruneTree(root *TreeNode) *TreeNode {
 	root.Left, root.Right = left, right
 	return root
 }
+
+func pruneTree1(root *TreeNode) *TreeNode {
+	if containsOne(root) {
+		return root
+	} else {
+		return nil
+	}
+}
+
+func containsOne(root *TreeNode) bool {
+	if root == nil {
+		return false
+	}
+
+	l, r := containsOne(root.Left), containsOne(root.Right)
+	if !l {
+		root.Left = nil
+	}
+	if !r {
+		root.Right = nil
+	}
+	return root.Val == 1 || l || r
+}
