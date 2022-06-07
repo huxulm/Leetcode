@@ -11,76 +11,37 @@ type Node struct {
 }
 
 func construct(grid [][]int) *Node {
-	return dfs(grid, 0, 0, len(grid))
+	n := len(grid)
+	return constructHelper(0, 0, n, n, grid)
 }
 
-func dfs(g [][]int, r, c, n int) *Node {
-	if n == 0 {
+func constructHelper(rowStart, rowEnd, colStart, colEnd int, grid [][]int) *Node {
+	if rowEnd == rowStart || colStart == colEnd {
 		return nil
 	}
-	zero, one := isAllsame(g, r, c, n)
-	if zero {
-		return &Node{Val: false, IsLeaf: true}
-	}
-	if one {
-		return &Node{Val: true, IsLeaf: true}
-	}
-	return &Node{
-		true,
-		false,
-		dfs(g, r, c, n/2),
-		dfs(g, r, c+n/2, n/2),
-		dfs(g, r+n/2, c, n/2),
-		dfs(g, r+n/2, c+n/2, n/2),
-	}
-}
-
-// 判断 n x n 是否全 1 或 0
-func isAllsame(g [][]int, r, c, n int) (zero, one bool) {
-	sum := 0
-	for i := r; i < r+n; i++ {
-		for j := c; j < c+n; j++ {
-			sum += g[i][j]
+	zeroCnt, oneCnt := 0, 0
+	for i := rowStart; i < rowEnd; i++ {
+		for j := colStart; j < colEnd; j++ {
+			if grid[i][j] == 0 {
+				zeroCnt++
+			} else if grid[i][j] == 1 {
+				oneCnt++
+			}
+			if oneCnt > 0 && zeroCnt > 0 {
+				break
+			}
 		}
 	}
-	return sum == 0, sum == n*n
-}
-
-// 方法二: 前缀和优化
-
-func construct1(grid [][]int) *Node {
-
-	N := len(grid)
-	pre := make([][]int, N+1)
-	pre[0] = make([]int, N+1)
-	for i, row := range grid {
-		pre[i+1] = make([]int, N+1)
-		for j, v := range row {
-			pre[i+1][j+1] = pre[i+1][j] + pre[i][j+1] - pre[i][j] + v
-		}
+	root := &Node{}
+	if zeroCnt > 0 && oneCnt > 0 {
+		root.IsLeaf = false
+		root.TopLeft = constructHelper(rowStart, (rowEnd-rowStart)>>1, colStart, colStart+(colEnd-colStart)>>1, grid)
+		root.TopRight = constructHelper(rowStart, (rowEnd-rowStart)>>1, colStart+(colEnd-colStart)>>1, colEnd, grid)
+		root.BottomLeft = constructHelper(rowStart+(rowEnd-rowStart)>>1, rowEnd, colStart, colStart+(colEnd-colStart)>>1, grid)
+		root.BottomRight = constructHelper(rowStart+(rowEnd-rowStart)>>1, rowEnd, colStart+(colEnd-colStart)>>1, colEnd, grid)
+	} else {
+		root.IsLeaf = true
+		root.Val = zeroCnt != 0
 	}
-
-	var dfs func(g [][]int, r, c, n int) *Node
-	dfs = func(g [][]int, r, c, n int) *Node {
-		if n == 0 {
-			return nil
-		}
-		total := pre[r+n][c+n] - pre[r+n][c] - pre[r][c+n] + pre[r][c]
-		zero, one := total == 0, total == n*n
-		if zero {
-			return &Node{Val: false, IsLeaf: true}
-		}
-		if one {
-			return &Node{Val: true, IsLeaf: true}
-		}
-		return &Node{
-			true,
-			false,
-			dfs(g, r, c, n/2),
-			dfs(g, r, c+n/2, n/2),
-			dfs(g, r+n/2, c, n/2),
-			dfs(g, r+n/2, c+n/2, n/2),
-		}
-	}
-	return dfs(grid, 0, 0, len(grid))
+	return root
 }
