@@ -35,3 +35,8 @@ func corpFlightBookings(bookings [][]int, n int) (ans []int) {
 	}
 	return
 }
+
+// 差分
+func corpFlightBookings1(bookings [][]int, n int) (ans []int) {
+	return
+}
